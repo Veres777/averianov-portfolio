@@ -3,12 +3,26 @@ from forms import ContactForm
 from flask_sqlalchemy import SQLAlchemy
 import os
 
+# 1️⃣ Inicializuj SQLAlchemy bez app
+db = SQLAlchemy()
+
+# 2️⃣ Vytvoř Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moje_tajne_heslo_123'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')#DAtábaze SQLite
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Optimalizace vykonu
 
-db = SQLAlchemy(app)
+# 3️⃣ Oprava DATABASE_URL
+raw_uri = os.environ.get('DATABASE_URL')
+if raw_uri and raw_uri.startswith("postgres://"):
+    raw_uri = raw_uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = raw_uri
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# 4️⃣ Teprve teď připoj app k SQLAlchemy
+db.init_app(app)
+
+# DALŠÍ KÓD – modely, routy atd.
+
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True) # Automaticke ID
     name = db.Column(db.String(100), nullable=False) # Jméno Uživatele

@@ -389,4 +389,6 @@ img {
 }
 .zprava{
     align-items: flex-end;
+    text-decoration: none;
+    display: flex;
 }

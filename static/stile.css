@@ -1,4 +1,4 @@
-k@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap');
 
 body {
     font-family: Arial, sans-serif;
@@ -376,5 +376,17 @@ img {
     color: #FFD700;
 }
 
+.obsah {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+}
 
-
+.formular-blok {
+    flex: 1;
+    min-width: 300px;
+}
+.zprava{
+    align-items: flex-end;
+}

@@ -1,0 +1,14 @@
+heroku run python --app averianov-portfolio
+
+
+from app import db, app
+with app.app_context():
+    db.create_all()
+
+
+
+from app import db, app, Message
+with app.app_context():
+    messages = Message.query.all()
+    for msg in messages:
+        print(f"{msg.id}: {msg.name} ({msg.email}) - {msg.message}")

@@ -37,21 +37,61 @@
                     <img src="{{ url_for('static', filename='email.png') }}"  alt="email" class="vlevo" />
                    
             </div>
-             <form method="POST" action="{{ url_for('kontakt') }}">
-                 {{ form.hidden_tag() }}
-
-                 <p>{{ form.name.label }}<br>
-                 {{ form.name(size=40) }}</p>
-
-                 <p>{{ form.email.label }}<br>
-                 {{ form.email(size=40) }}</p>
-
-                 <p>{{ form.message.label }}<br>
-                 {{ form.message(rows=5, cols=40) }}</p>
-
-                 <p>{{ form.submit() }}</p>
-             </form>
-         <section/>  
+            <form method="POST" action="{{ url_for('kontakt') }}">
+                {{ form.hidden_tag() }}
+        
+                <div>
+                    <label for="name">{{ form.name.label }}</label><br>
+                    {{ form.name(size=32) }}
+                    {% if form.name.errors %}
+                        <div style="color: red; font-size: 14px;">
+                            {% for error in form.name.errors %}
+                                Chyba: {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+        
+                <div>
+                    <label for="email">{{ form.email.label }}</label><br>
+                    {{ form.email(size=32) }}
+                    {% if form.email.errors %}
+                        <div style="color: red; font-size: 14px;">
+                            {% for error in form.email.errors %}
+                                Chyba: {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+        
+                <div>
+                    <label for="message">{{ form.message.label }}</label><br>
+                    {{ form.message(rows=5, cols=40) }}
+                    {% if form.message.errors %}
+                        <div style="color: red; font-size: 14px;">
+                            {% for error in form.message.errors %}
+                                Chyba: {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+        
+                <div>
+                    {{ form.submit(class_="btn btn-primary") }}
+                </div>
+            </form>
+        
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div style="margin-top: 10px; color: green;">
+                  {% for message in messages %}
+                    ✔️ {{ message }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+        
+            <hr>
     </article>
     <footer>
         Vytvořil &copy; 2025 Averianov Serghei

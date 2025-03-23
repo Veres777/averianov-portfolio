@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, flash
 from forms import ContactForm
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moje_tajne_heslo_123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'#DAtábaze SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')#DAtábaze SQLite
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Optimalizace vykonu
 
 db = SQLAlchemy(app)

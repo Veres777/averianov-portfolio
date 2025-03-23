@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kontakt na programátora Serghei, programování na zakázku." />
+    <meta name="keywords" content="kontakt, programátor, Serghei, zakázka, programování" />
+    <meta name="author" content="Serghei" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/ikona.ico') }}" />
+    <title>Prezentace - Averianov Serghei</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lightbox.min.css') }}" type="text/css" media="screen" />
+<script src="{{ url_for('static', filename='lightbox-plus-jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lightbox.min.js') }}"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div id="logo">
+            <h1>Averianov <span>Serghei</span></h1>
+            <small>Webový vývojář</small>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Domů</a></li>
+                <li><a href="{{ url_for('about') }}">O mně</a></li>
+                <li><a href="{{ url_for('dovednosti') }}">Dovednosti</a></li>
+                <li class="aktivni"><a href="{{ url_for('projekty') }}">Prezentace</a></li>
+                <li><a class="kontakt-tlacitko" href="{{ url_for('kontakt') }}">Kontakt</a></li>
+            </ul>
+        </nav>
+         <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </header>
+    <article>
+        <header>
+            <h1>Prezentace</h1>
+        </header>
+        <section class="obsah">
+            <img src="{{ url_for('static', filename='DALL·E 2025-03-17 14.02.13 - An infographic showcasing various programming skills, featuring icons for Python, HTML, CSS, JavaScript, and Django. The design should be clean and mo.webp') }}" alt="Ukázka projektu" class="obrazek">
+            <div class="text">
+                <p>Níže naleznete ukázky mých dosavadních prací. Mohu vám nabídnout tvorbu podobného softwaru na zakázku.</p>
+
+            <div id="prezentace">
+                <a href="{{ url_for('static', filename='kalkulacka_java.png') }}" title="Kalkulačka v Javě" rel="lightbox[reference]">
+                    <img src="{{ url_for('static', filename='kalkulacka_java_nahled.png') }}" alt="Kalkulačka v Javě" />
+                </a>
+                <a href="{{ url_for('static', filename='miny_pascal.png') }}" title="Miny v Pascalu" rel="lightbox[reference]">
+                    <img src="{{ url_for('static', filename='miny_pascal_nahled.png') }}" alt="Miny v Pascalu" />
+                </a>
+                <a href="{{ url_for('static', filename='Snímek obrazovky z 2025-03-17 16-35-16.png') }}" title="Web v HTML a CSS" rel="lightbox[reference]">
+                    <img src="{{ url_for('static', filename='/Snímek obrazovky z 2025-03-17 16-35-16_nahled.png') }}" alt="Web v HTML a CSS" />
+                </a>
+            </div>
+                <p>Zde budu prezentovat své webové projekty.</p>
+            </div>
+        </section>
+    </article>
+    <footer>
+        Vytvořil &copy; 2025 Averianov Serghei
+    </footer>
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle("menu-active");
+        }
+        </script>        
+</body>
+</html>

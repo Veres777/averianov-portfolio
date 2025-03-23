@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Webové projekty studenta rekvalifikačního kurzu - Averianov Serghei." />
+    <meta name="keywords" content="webový vývojář, rekvalifikace, programování, HTML, CSS" />
+    <meta name="author" content="Serghei" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='ikona.ico') }}" />
+    <title>Averianov Serghei - Webový vývojář</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}"/>
+</head>
+<body>
+    <header class="navbar">
+        <div id="logo">
+            <h1>Averianov <span>Serghei</span></h1>
+            <small>Webový vývojář</small>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="aktivni"><a href="{{ url_for('home') }}">Domů</a></li>
+                <li><a href="{{ url_for('about') }}">O mně</a></li>
+                <li><a href="{{ url_for('dovednosti') }}">Dovednosti</a></li>
+                <li><a href="{{ url_for('projekty') }}">Prezentace</a></li>
+                <li><a class="kontakt-tlacitko" href="{{ url_for('kontakt') }}">Kontakt</a></li>
+            </ul>
+        </nav>
+        <script src="{{ url_for('static', filename='script.js') }}"></script> 
+    </header>
+    <article>
+        <header>
+            <h1>Vítejte</h1>
+        </header>
+        
+        <section class="moje-prezentace">
+            <h2>Moje cesta k programování</h2>
+            <img src="{{ url_for('static', filename='DALL·E 2025-03-17 13.59.02 - A modern web development workspace setup, featuring a laptop with code on screen, a desk with a coffee mug, and a minimalist background. The atmospher.webp') }}" alt="Hlavní obrázek" class="obraz" />
+            <p>
+                Tento web je ukázkou mé práce v rámci rekvalifikačního kurzu vývoje webových aplikací. 
+                Učím se programování a vytvářím vlastní projekty, abych si osvojil nové dovednosti a rozšířil své znalosti v IT.
+            </p>
+            <p>
+                Každý den je pro mě novou příležitostí se zlepšovat a objevovat nové technologie. 
+                S každým dalším projektem získávám více zkušeností a učím se nejen HTML a CSS, ale také backendové technologie jako Python.
+            </p>
+            <p class="citace">
+                <i>"Každý řádek kódu je krokem k lepší budoucnosti."</i>
+            </p>
+            <div class="cistic"></div>
+        </section>
+        <a href="{{ url_for('projekty') }}" class="tlacitko-prezentace">Moje prezentace</a>
+
+    </article>
+    <footer>
+        Vytvořil &copy; 2025 Averianov Serghei
+    </footer>
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle("menu-active");
+        }
+        </script>        
+</body>
+</html>

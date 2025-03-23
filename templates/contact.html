@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kontakt na programátora Serghei, programování na zakázku." />
+    <meta name="keywords" content="kontakt, programátor, Serghei, zakázka, programování" />
+    <meta name="author" content="Serghei" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='ikona.ico') }}" />
+    <title>Kontakt - Averianov Serghei</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}">
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1>Averianov <span>Serghei</span></h1>
+            <small>Webový vývojář</small>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Domů</a></li>
+                <li><a href="{{ url_for('about') }}"">O mně</a></li>
+                <li><a href="{{ url_for('dovednosti') }}">Dovednosti</a></li>
+                <li><a href="{{ url_for('projekty') }}">Prezentace</a></li>
+                <li class="aktivni"><a class="kontakt-tlacitko" href="{{ url_for('kontakt') }}">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    <article>
+        <header>
+            <h1>Kontaktujte mě</h1>
+        </header>
+        <section class="obsah">
+            <img src="{{ url_for('static', filename='A_modern_web_development_workspace_setup,_featurin.png') }}" alt="Kontakt" class="obrazek">
+            <div class="text">
+                
+                    <img src="{{ url_for('static', filename='email.png') }}"  alt="email" class="vlevo" />
+                   
+            </div>
+             <form method="POST">
+                 {{ form.hidden_tag() }}
+
+                 <p>{{ form.name.label }}<br>
+                 {{ form.name(size=40) }}</p>
+
+                 <p>{{ form.email.label }}<br>
+                 {{ form.email(size=40) }}</p>
+
+                 <p>{{ form.message.label }}<br>
+                 {{ form.message(rows=5, cols=40) }}</p>
+
+                 <p>{{ form.submit() }}</p>
+             </form>
+         <section/>  
+    </article>
+    <footer>
+        Vytvořil &copy; 2025 Averianov Serghei
+    </footer>
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle("menu-active");
+        }
+        </script>        
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="cs"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Osobní příběh a cesta Averianova Sergheie k programování.">
+    <meta name="keywords" content="o mně, webový vývojář, rekvalifikace, IT">
+    <meta name="author" content="Serghei">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='ikona.ico') }}">
+    <title>O mně - Averianov Serghei</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}">
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1>Averianov <span>Serghei</span></h1>
+            <small>Webový vývojář</small>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Domů</a></li>
+                <li class="aktivni"><a href="{{ url_for('about') }}">O mně</a></li>
+                <li><a href="{{ url_for('dovednosti') }}">Dovednosti</a></li>
+                <li><a href="{{ url_for('projekty') }}">Prezentace</a></li>
+                <li><a class="kontakt-tlacitko" href="{{ url_for('kontakt') }}">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    <article>
+        <header>
+            <h1>O mně</h1>
+        </header>
+        <section class="obsah">
+            <img src="{{ url_for('static', filename='DALL·E 2025-03-17 14.01.38 - A modern web developer workspace with a laptop showing lines of code on the screen, a sleek mechanical keyboard, and a minimalistic desk setup. The wo.webp') }}" alt="Profilový obrázek" class="obrazek">
+            <div class="text">
+                <p>Jmenuji se Averianov Serghei a pocházím z Moldavska. Od roku 2017 žiji v Hostivici.</p>
+                <p>
+                    Dříve jsem pracoval jako řemeslník, ale rozhodl jsem se vydat novým směrem – do světa IT. 
+                    Aktuálně studuji rekvalifikační kurz zaměřený na vývoj webových aplikací v Pythonu.
+                </p>
+                <p>
+                    Tento web je součástí mého studia a ukázkou mého pokroku. S každým dalším projektem se učím nové věci a snažím se zdokonalovat.
+                </p>
+                <p>
+                    Mým cílem je stát se profesionálním vývojářem a pracovat na zajímavých a inovativních projektech.
+                </p>
+            </div>
+        </section>
+    </article>
+    <footer>
+        Vytvořil © 2025 Averianov Serghei
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle("menu-active");
+        }
+        </script>
+        
+<deepl-input-controller></deepl-input-controller></body></html>

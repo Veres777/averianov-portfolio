@@ -1,0 +1,380 @@
+k@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    color: #00386B;
+    background: #F9F9F9;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 100px 0px 0px 0px;
+    min-width: 960px;
+}
+
+body > header {
+    height: 100px;
+    width: 100%;
+    background: #00386B;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+}
+
+#logo {
+    height: 40px;
+    margin: auto 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: url(./obrazky/logo.png) no-repeat;
+    background-size: 40px 40px;
+}
+
+header h1 {
+text-align: left ;
+}
+
+#logo > * {
+    margin: 0 0 0 50px;
+}
+
+
+#logo h1 {
+    font-weight: normal;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    color: white;
+
+}
+
+#logo h1 span {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#logo small {
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+nav ul {
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+nav ul li {
+    padding: 0 25px;
+    margin: 0 5px;
+    font-size: 1em;
+}
+
+nav ul a {
+    color: white;
+    padding: 8px 0;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+nav ul a:hover, .aktivni a {
+    border-bottom: 2px solid #EF6534;
+}
+
+.kontakt-tlacitko {
+    background: #EF6534;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.kontakt-tlacitko:hover {
+    filter: brightness(115%) contrast(85%);
+}
+
+article {
+    margin: 60px;
+    max-width: 960px;
+    padding: 50px 50px 10px 50px;
+}
+
+article header {
+    height: 80px;
+}
+
+article h1 {
+    margin: 0;
+    font-size: 2.3em;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: max-content;
+    border-bottom: 4px solid #EF6534;
+    font-family: 'Chakra Petch';
+}
+
+article section {
+    line-height: 1.8em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Oprava velikosti obrázků - obrázky napravo, text nalevo */
+.obsah {
+    padding: 25px;
+    display: flex;
+    flex-direction: row-reverse; /* Opačné pořadí */
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.obrazek {
+    max-width: 45%;
+    height: max-content;
+    border-radius: 20px;
+    box-shadow: 8px 4px 8px rgba(0, 0, 0, 0.3);
+}
+.obraz {
+    float: right;
+    width: 300px;
+    padding-left: 10px;
+    filter: grayscale(1);
+    border-radius: 20px;
+}
+
+.text {
+    max-width: 50%;
+    padding-right: 20px;
+}
+
+
+footer {
+    box-sizing: border-box;
+    text-align: center;
+    height: 100px;
+    color: white;
+    background: #414042;
+    padding: 50px 0 0 0;
+    clip-path: polygon(0 30px, 100% 0, 100% 105%, 0 105%);
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+html {
+    background: #414042;
+}
+
+/* Styl tlačítka "Moje prezentace" */
+.tlacitko-prezentace {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+/* Efekt hover pro tlačítko "Moje prezentace" */
+.tlacitko-prezentace:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.moje-prezentace {
+    max-width: 1000px;
+    margin: 5px auto;
+    padding: 5px;
+    background: #ffffff;
+    border-bottom: 5px left #EF6534;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    line-height: 1.8em;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    font-weight: bold;
+}s
+
+/* Nadpis "Můj příběh" */
+.moje-prezentace h2 {
+    color: #00386B;
+    font-size: 1.8em;
+    text-align: left;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #EF6534;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Oprava rozložení textu */
+.moje-prezentace p {
+    margin-bottom: 15px;
+    text-align: justify;
+    padding-right: 10px;
+}
+
+/* Oprava citace */
+.citace {
+    font-style: italic;
+    font-size: 1.2em;
+    text-align: right;
+    color: #555;
+    margin-top: 20px;
+    padding-right: 10px;
+}
+
+.vlevo {
+    float: left;
+    width: 35px;
+    padding-right: 20px;
+    filter: grayscale(1);
+}
+
+.cistic {
+    clear: both;
+}
+ 
+#dovednosti td {
+    width: 33%;
+    padding: 10px;
+    vertical-align: top;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+#dovednosti {
+    border-collapse: collapse;
+}
+#prezentace img {
+    border: 1px solid gray;
+    padding: 6px;
+    box-shadow: 3px 3px 6px #999999;
+    margin-right: 6px;
+}
+
+#prezentace a {
+    text-decoration: none;
+}
+
+#prezentace a:hover {
+    text-decoration: none;
+}
+.centrovany {
+    text-align: center;
+}
+/* Základní stylování pro desktop */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Kontejner */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+
+/* Hlavní sekce */
+.hero {
+    background: url('images/hero.jpg') center/cover no-repeat;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+
+.hero h1 {
+    font-size: 2.5rem;
+}
+
+/* Obsah */
+.section {
+    padding: 50px 20px;
+}
+
+.section h2 {
+    text-align: center;
+}
+/* Globální styl pro lepší zobrazení */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* Nastavení základní šířky pro všechny stránky */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.9em;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 10px;
+}
+
+/* ✅ Oprava obrázků - nebudou obří */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ✅ Oprava loga a jména */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003868;
+    padding: 10px 20px;
+    color: white;
+}
+
+.logo img {
+    max-width: 140px; /* Logo nebude moc velké */
+    height: auto;
+}
+
+/* ✅ Oprava navigace */
+.nav-menu {
+    list-style: none;
+    display: flex;
+}
+
+.nav-menu li {
+    margin-left: 20px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+}
+
+.nav-menu a:hover {
+    color: #FFD700;
+}
+
+
+

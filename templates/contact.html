@@ -37,7 +37,7 @@
                     <img src="{{ url_for('static', filename='email.png') }}"  alt="email" class="vlevo" />
                    
             </div>
-             <form method="POST">
+             <form method="POST" action="{{ url_for('kontakt') }}>
                  {{ form.hidden_tag() }}
 
                  <p>{{ form.name.label }}<br>

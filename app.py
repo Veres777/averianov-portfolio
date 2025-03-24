@@ -129,7 +129,7 @@ def posli_email(jmeno, email, zprava):
 
     predmet = "Nová zpráva z portfolia"
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
-    msg = MIMEText(telo, "plain", "utf-8")
+    msg = MIMEText(telo.encode('utf-8'), _charset='utf-8')
     msg["Subject"] = predmet
     msg["From"] = your_email
     msg["To"] = your_email

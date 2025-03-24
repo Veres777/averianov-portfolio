@@ -1,0 +1,34 @@
+<!-- templates/admin.html -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin sekce</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Seznam zpráv z kontaktního formuláře</h2>
+        <a href="{{ url_for('logout') }}">Odhlásit se</a>
+        <hr>
+        {% if messages %}
+            <ul>
+                {% for msg in messages %}
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong>Jméno:</strong> {{ msg.name }}<br>
+                        <strong>E-mail:</strong> {{ msg.email }}<br>
+                        <strong>Zpráva:</strong><br>
+                        <div style="margin: 0.5rem 0; padding: 0.5rem; background: #f4f4f4; border-radius: 5px;">
+                            {{ msg.message }}
+                        </div>
+                        <small><em>ID zprávy: {{ msg.id }}</em></small>
+                        <hr>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Žádné zprávy nebyly nalezeny.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

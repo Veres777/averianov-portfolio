@@ -1,11 +1,12 @@
-# app.py (upravená verze podle tvého kódu)
-
+from email.mime.text import MIMEText
+from flask_mail import Mail, Message as MailMessage
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
+from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
+import smtplib
 
 # 1️⃣ Inicializuj SQLAlchemy bez app
 db = SQLAlchemy()
@@ -19,10 +20,9 @@ raw_uri = os.environ.get('DATABASE_URL')
 if raw_uri and raw_uri.startswith("postgres://"):
     raw_uri = raw_uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = raw_uri
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 4️⃣ Teprve teď připoj app k SQLAlchemy
+# 4️⃣ Připoj app k SQLAlchemy
 db.init_app(app)
 
 # 5️⃣ Připoj Flask-Login
@@ -83,6 +83,7 @@ def kontakt():
         )
         db.session.add(new_message)
         db.session.commit()
+        posli_email(form.name.data, form.email.data, form.message.data)
         flash(f'Děkujeme {form.name.data}, tvoje zpráva byla uložena!', 'success')
         return redirect(url_for('kontakt'))
 
@@ -117,6 +118,30 @@ def logout():
 def admin():
     messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('admin.html', messages=messages)
+
+# 📧 Odeslání emailu po odeslání zprávy z formuláře
+
+def posli_email(jmeno, email, zprava):
+    smtp_server = "smtp.seznam.cz"
+    smtp_port = 587
+    your_email = "averpodlahy@seznam.cz"
+    your_password = os.environ.get("MAIL_PASSWORD")  # 🔐 bezpečnější varianta
+
+    predmet = "Nová zpráva z portfolia"
+    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
+    msg = MIMEText(telo, "plain", "utf-8")
+    msg["Subject"] = predmet
+    msg["From"] = your_email
+    msg["To"] = your_email
+
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(your_email, your_password)
+            server.sendmail(your_email, your_email, msg.as_string())
+        print("✅ E-mail odeslán!")
+    except Exception as e:
+        print("❌ Chyba při odesílání:", e)
 
 if __name__ == '__main__':
     app.run(debug=True)

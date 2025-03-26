@@ -122,8 +122,6 @@ def admin():
 
 # Odeslání emailu po odeslání zprávy z formuláře
 
-
-
 def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587

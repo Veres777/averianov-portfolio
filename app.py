@@ -5,7 +5,6 @@ from flask_login import LoginManager, login_user, login_required, logout_user, U
 from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
-import smtplib
 
 # 1️⃣ Inicializuj SQLAlchemy bez app
 db = SQLAlchemy()
@@ -120,25 +119,30 @@ def admin():
 
 # Odeslání emailu po odeslání zprávy z formuláře
 
+
 def posli_email(jmeno, email, zprava):
+    import smtplib
+
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("MAIL_PASSWORD")  # Heslo máš v proměnné na Heroku
+    your_password = os.environ.get("MAIL_PASSWORD")
 
     subject = "Nová zpráva z portfolia"
     body = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
+    # Poskládání zprávy jako čistý string
     message = f"Subject: {subject}\nFrom: {your_email}\nTo: {your_email}\n\n{body}"
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls()
             server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, message.encode("utf-8"))
-        print("✅ E-mail odeslán!")
+            server.sendmail(your_email, your_email, message.encode("latin1", errors="ignore"))
+        print("✅ E-mail byl odeslán.")
     except Exception as e:
-        print("❌ Chyba při odesílání:", e)
+        print("❌ Chyba při odesílání e-mailu:", e)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

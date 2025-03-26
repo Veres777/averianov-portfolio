@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Averianov Portfolio
 
 Jednoduchý webový projekt vytvořený ve Flasku jako osobní portfolio.

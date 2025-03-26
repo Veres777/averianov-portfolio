@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 import os
 
 # 1️⃣ Inicializuj SQLAlchemy bez app
@@ -120,25 +123,29 @@ def admin():
 # Odeslání emailu po odeslání zprávy z formuláře
 
 
-def posli_email(jmeno, email, zprava):
-    import smtplib
 
+def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
     your_password = os.environ.get("MAIL_PASSWORD")
 
     subject = "Nová zpráva z portfolia"
-    body = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
+    body = f"Jméno: {jmeno}<br>E-mail: {email}<br>Zpráva:<br>{zprava}"
 
-    # Poskládání zprávy jako čistý string
-    message = f"Subject: {subject}\nFrom: {your_email}\nTo: {your_email}\n\n{body}"
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = your_email
+    msg["To"] = your_email
+
+    part = MIMEText(body, "html", "utf-8")
+    msg.attach(part)
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls()
             server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, message.encode("latin1", errors="ignore"))
+            server.sendmail(your_email, your_email, msg.as_string())
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)

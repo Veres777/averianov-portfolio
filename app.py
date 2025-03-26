@@ -1,4 +1,3 @@
-from email.mime.text import MIMEText
 from flask_mail import Mail, Message as MailMessage
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
@@ -125,31 +124,21 @@ def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("MAIL_PASSWORD")
+    your_password = os.environ.get("MAIL_PASSWORD")  # Heslo máš v proměnné na Heroku
 
-    predmet = "Nová zpráva z portfolia"
-    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
+    subject = "Nová zpráva z portfolia"
+    body = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
-    msg = MIMEText(telo, "plain", "utf-8")  # ✅ Jednoduše, bez encode()
-
-    msg["Subject"] = predmet
-    msg["From"] = your_email
-    msg["To"] = your_email
+    message = f"Subject: {subject}\nFrom: {your_email}\nTo: {your_email}\n\n{body}"
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls()
             server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, msg.as_string())
+            server.sendmail(your_email, your_email, message.encode("utf-8"))
         print("✅ E-mail odeslán!")
     except Exception as e:
         print("❌ Chyba při odesílání:", e)
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

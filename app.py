@@ -122,32 +122,27 @@ def admin():
 # Odeslání emailu po odeslání zprávy z formuláře
 
 def posli_email(jmeno, email, zprava):
-    print("➡️ Funkce posli_email() byla zavolána.")
-
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("MAIL_PASSWORD")
+    your_password = os.environ.get("MAIL_PASSWORD")  # bezpečně
 
     predmet = "Nová zpráva z portfolia"
-    telo = f"""
-    Byla odeslána nová zpráva z kontaktního formuláře:
-
-    Jméno: {jmeno}
-    E-mail: {email}
-    Zpráva:
-    {zprava}
-    """
-    zprava_full = f"Subject: {predmet}\nFrom: {your_email}\nTo: {your_email}\n\n{telo}"
+    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
+    msg = MIMEText(telo, "plain", "utf-8")  # ✅ správná verze
+    msg["Subject"] = predmet
+    msg["From"] = your_email
+    msg["To"] = your_email
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls()
             server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, zprava_full.encode('utf-8'))
-            print("✅ E-mail byl odeslán.")
+            server.sendmail(your_email, your_email, msg.as_string())
+        print("✅ E-mail odeslán!")
     except Exception as e:
         print("❌ Chyba při odesílání:", e)
+
 
 
 

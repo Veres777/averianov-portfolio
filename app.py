@@ -121,15 +121,19 @@ def admin():
 
 # Odeslání emailu po odeslání zprávy z formuláře
 
+from email.mime.text import MIMEText
+
 def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("MAIL_PASSWORD")  # bezpečně
+    your_password = os.environ.get("MAIL_PASSWORD")
 
     predmet = "Nová zpráva z portfolia"
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
-    msg = MIMEText(telo, "plain", "utf-8")  # ✅ správná verze
+
+    msg = MIMEText(telo, "plain", "utf-8")  # ✅ Jednoduše, bez encode()
+
     msg["Subject"] = predmet
     msg["From"] = your_email
     msg["To"] = your_email
@@ -142,6 +146,7 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail odeslán!")
     except Exception as e:
         print("❌ Chyba při odesílání:", e)
+
 
 
 

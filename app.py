@@ -130,17 +130,25 @@ def posli_email(jmeno, email, zprava):
     your_password = os.environ.get("MAIL_PASSWORD")
 
     predmet = "Nová zpráva z portfolia"
-    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
-    zprava_full = f"Subject: {predmet}\n\n{telo}"
+    telo = f"""
+    Byla odeslána nová zpráva z kontaktního formuláře:
+
+    Jméno: {jmeno}
+    E-mail: {email}
+    Zpráva:
+    {zprava}
+    """
+    zprava_full = f"Subject: {predmet}\nFrom: {your_email}\nTo: {your_email}\n\n{telo}"
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             server.starttls()
             server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, zprava_full.encode('utf-8'))  # 🔥 tady je oprava
+            server.sendmail(your_email, your_email, zprava_full.encode('utf-8'))
             print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání:", e)
+
 
 
 

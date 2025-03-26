@@ -4,10 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 import smtplib
 import os
+from email.mime.text import MIMEText
 
 # 1️⃣ Inicializuj SQLAlchemy bez app
 db = SQLAlchemy()
@@ -46,7 +45,7 @@ class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-#  Uživatelé (zatím napevno)
+# 🔐 Uživatelé (zatím napevno)
 users = {
     "admin": generate_password_hash("tajneheslo")
 }
@@ -55,7 +54,7 @@ users = {
 def load_user(user_id):
     return User(user_id)
 
-#  ROUTES
+# 🌐 ROUTES
 
 @app.route('/')
 def home():
@@ -120,24 +119,22 @@ def admin():
     messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('admin.html', messages=messages)
 
-# Odeslání emailu po odeslání zprávy z formuláře
+# 📧 Odeslání emailu po odeslání zprávy z formuláře
 
 def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("MAIL_PASSWORD")
+    your_password = os.environ.get("62583425Avermax")
 
-    subject = "Nová zpráva z portfolia"
-    body = f"Jméno: {jmeno}<br>E-mail: {email}<br>Zpráva:<br>{zprava}"
+    predmet = "Nová zpráva z portfolia"
+    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
+    msg = MIMEText(telo, "plain", "utf-8")
+    msg["Subject"] = predmet
     msg["From"] = your_email
     msg["To"] = your_email
-
-    part = MIMEText(body, "html", "utf-8")
-    msg.attach(part)
+    msg["Reply-To"] = email
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -147,7 +144,6 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

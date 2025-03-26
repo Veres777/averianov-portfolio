@@ -121,8 +121,6 @@ def admin():
 
 # Odeslání emailu po odeslání zprávy z formuláře
 
-from email.mime.text import MIMEText
-
 def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
@@ -146,6 +144,7 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail odeslán!")
     except Exception as e:
         print("❌ Chyba při odesílání:", e)
+
 
 
 

@@ -125,7 +125,7 @@ def posli_email(jmeno, email, zprava):
     smtp_server = "smtp.seznam.cz"
     smtp_port = 587
     your_email = "averpodlahy@seznam.cz"
-    your_password = os.environ.get("62583425Avermax")
+    your_password = os.environ.get("MAIL_PASSWORD")
 
     predmet = "Nová zpráva z portfolia"
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"

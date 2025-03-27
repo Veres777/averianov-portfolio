@@ -8,29 +8,29 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 
-# 1️⃣ Inicializuj SQLAlchemy bez app
+#  Inicializuj SQLAlchemy bez app
 db = SQLAlchemy()
 
-# 2️⃣ Vytvoř Flask app
+# Vytvoř Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moje_tajne_heslo_123'
 
-# 3️⃣ Oprava DATABASE_URL
+#  Oprava DATABASE_URL
 raw_uri = os.environ.get('DATABASE_URL')
 if raw_uri and raw_uri.startswith("postgres://"):
     raw_uri = raw_uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = raw_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 4️⃣ Připoj app k SQLAlchemy
+# Připoj app k SQLAlchemy
 db.init_app(app)
 
-# 5️⃣ Připoj Flask-Login
+#  Připoj Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# 🔸 Model zprávy
+#  Model zprávy
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -40,12 +40,12 @@ class Message(db.Model):
     def __repr__(self):
         return f"Message('{self.name}', '{self.email}')"
 
-# 🔸 Uživatelský model
+#  Uživatelský model
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-# 🔐 Uživatelé (zatím napevno)
+#  Uživatelé (zatím napevno)
 users = {
     "admin": generate_password_hash("tajneheslo")
 }
@@ -119,12 +119,12 @@ def admin():
     messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('admin.html', messages=messages)
 
-# 📧 Odeslání emailu po odeslání zprávy z formuláře
+# Odeslání emailu po odeslání zprávy z formuláře
 
 def posli_email(jmeno, email, zprava):
-    smtp_server = "smtp.seznam.cz"
+    smtp_server = "smtp.gmail.com"
     smtp_port = 587
-    your_email = "averpodlahy@seznam.cz"
+    your_email = os.environ.get("MAIL_USERNAME")
     your_password = os.environ.get("MAIL_PASSWORD")
 
     predmet = "Nová zpráva z portfolia"
@@ -144,6 +144,5 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
-
 if __name__ == '__main__':
     app.run(debug=True)

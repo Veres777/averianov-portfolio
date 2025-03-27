@@ -1,4 +1,4 @@
-# Averianov Portfolio
+# Averianov Portfolios
 
 Jednoduchý webový projekt vytvořený ve Flasku jako osobní portfolio.
 

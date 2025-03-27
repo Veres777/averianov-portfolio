@@ -124,7 +124,9 @@ def admin():
 def posli_email(jmeno, email, zprava):
     import smtplib
     from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
     from email.header import Header
+    import os
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
@@ -134,11 +136,15 @@ def posli_email(jmeno, email, zprava):
     predmet = Header("Nová zpráva z portfolia", "utf-8")
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
-    msg = MIMEText(telo.encode('utf-8'), "plain", "utf-8")
-    msg["Subject"] = predmet
-    msg["From"] = your_email
-    msg["To"] = your_email
-    msg["Reply-To"] = email
+    # Nastav víceúčelový e-mail s podporou utf-8
+    msg = MIMEMultipart()
+    msg['From'] = your_email
+    msg['To'] = your_email
+    msg['Subject'] = predmet
+    msg['Reply-To'] = email
+
+    # Připoj textovou zprávu
+    msg.attach(MIMEText(telo, "plain", "utf-8"))
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -148,6 +154,7 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -122,15 +122,19 @@ def admin():
 # Odeslání emailu po odeslání zprávy z formuláře
 
 def posli_email(jmeno, email, zprava):
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.header import Header
+
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
     your_email = os.environ.get("MAIL_USERNAME")
     your_password = os.environ.get("MAIL_PASSWORD")
 
-    predmet = "Nová zpráva z portfolia"
+    predmet = Header("Nová zpráva z portfolia", "utf-8")
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
-    msg = MIMEText(telo, "plain", "utf-8")
+    msg = MIMEText(telo.encode('utf-8'), "plain", "utf-8")
     msg["Subject"] = predmet
     msg["From"] = your_email
     msg["To"] = your_email
@@ -144,5 +148,6 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
+
 if __name__ == '__main__':
     app.run(debug=True)

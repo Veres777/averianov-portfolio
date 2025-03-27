@@ -133,17 +133,17 @@ def posli_email(jmeno, email, zprava):
     your_email = os.environ.get("MAIL_USERNAME")
     your_password = os.environ.get("MAIL_PASSWORD")
 
-    predmet = Header("Nová zpráva z portfolia", "utf-8")
+    predmet = str(Header("Nová zpráva z portfolia", "utf-8"))
     telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
-    # Nastav víceúčelový e-mail s podporou utf-8
     msg = MIMEMultipart()
     msg['From'] = your_email
     msg['To'] = your_email
     msg['Subject'] = predmet
     msg['Reply-To'] = email
 
-    # Připoj textovou zprávu
+    # TADY JE TRIK: Nepoužívej .encode("utf-8")!
+    # Flask + smtplib to pak zmrší, když to uděláš ručně
     msg.attach(MIMEText(telo, "plain", "utf-8"))
 
     try:
@@ -154,6 +154,7 @@ def posli_email(jmeno, email, zprava):
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
+
 
 
 if __name__ == '__main__':

@@ -95,7 +95,7 @@ def kontakt():
         flash(f'Děkujeme {form.name.data}, tvoje zpráva byla uložena!', 'success')
         return redirect(url_for('kontakt'))
 
-    messages = MessageModel.query.order_by(MessageModel.id.desc()).all()
+    messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('contact.html', form=form, messages=messages)
 
 @app.route('/tajny-pristup', methods=['GET', 'POST'])
@@ -124,7 +124,7 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin():
-    messages = MessageModel.query.order_by(MessageModel.id.desc()).all()
+    messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('admin.html', messages=messages)
 
 # Odeslání emailu po odeslání zprávy z formuláře

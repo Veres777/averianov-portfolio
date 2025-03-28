@@ -95,7 +95,7 @@ def kontakt():
         flash(f'Děkujeme {form.name.data}, tvoje zpráva byla uložena!', 'success')
         return redirect(url_for('kontakt'))
 
-    messages = Message.query.order_by(Message.id.desc()).all()
+    messages = ContactMessage.query.order_by(ContactMessage.id.desc()).all()
     return render_template('contact.html', form=form, messages=messages)
 
 @app.route('/tajny-pristup', methods=['GET', 'POST'])

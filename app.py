@@ -4,9 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, UserMixin
 from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
-import smtplib
 import os
-from email.mime.text import MIMEText
 
 #  Inicializuj SQLAlchemy bez app
 db = SQLAlchemy()
@@ -21,6 +19,17 @@ if raw_uri and raw_uri.startswith("postgres://"):
     raw_uri = raw_uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = raw_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Konfigurace Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.environ.get("MAIL_PASSWORD")
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get("MAIL_USERNAME")
+app.config['MAIL_ASCII_ATTACHMENTS'] = False  # Důležité pro UTF-8!
+
+mail = Mail(app)
 
 # Připoj app k SQLAlchemy
 db.init_app(app)
@@ -54,8 +63,7 @@ users = {
 def load_user(user_id):
     return User(user_id)
 
-# 🌐 ROUTES
-
+#  ROUTES
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -99,7 +107,7 @@ def login():
 
         if user_hash and check_password_hash(user_hash, password):
             login_user(User(username))
-            flash('Přihlášení proběhlo úspěšně!', 'success')
+            flash('Přihlášení proběhlo ústěšně!', 'success')
             return redirect(url_for('admin'))
         else:
             flash('Nesprávné přihlašovací údaje', 'danger')
@@ -119,43 +127,17 @@ def admin():
     messages = Message.query.order_by(Message.id.desc()).all()
     return render_template('admin.html', messages=messages)
 
-# Odeslání emailu po odeslání zprávy z formuláře
-
+#  Funkce pro odeslání emailu přes Flask-Mail
 def posli_email(jmeno, email, zprava):
-    import smtplib
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    from email.header import Header
-    import os
-
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 587
-    your_email = os.environ.get("MAIL_USERNAME")
-    your_password = os.environ.get("MAIL_PASSWORD")
-
-    predmet = str(Header("Nová zpráva z portfolia", "utf-8"))
-    telo = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
-
-    msg = MIMEMultipart()
-    msg['From'] = your_email
-    msg['To'] = your_email
-    msg['Subject'] = predmet
-    msg['Reply-To'] = email
-
-    # TADY JE TRIK: Nepoužívej .encode("utf-8")!
-    # Flask + smtplib to pak zmrší, když to uděláš ručně
-    msg.attach(MIMEText(telo, "plain", "utf-8"))
+    subject = "Nová zpráva z portfolia"
+    body = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
 
     try:
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(your_email, your_password)
-            server.sendmail(your_email, your_email, msg.as_string())
+        msg = MailMessage(subject=subject, recipients=[os.environ.get("MAIL_USERNAME")], body=body)
+        mail.send(msg)
         print("✅ E-mail byl odeslán.")
     except Exception as e:
         print("❌ Chyba při odesílání e-mailu:", e)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

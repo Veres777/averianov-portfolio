@@ -6,51 +6,42 @@ from forms import ContactForm
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
 
-# Inicializuj SQLAlchemy bez app
-db = SQLAlchemy()
-
-# Vytvoř Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'moje_tajne_heslo_123'
 
-# Oprava DATABASE_URL
+# DATABASE
 raw_uri = os.environ.get('DATABASE_URL')
 if raw_uri and raw_uri.startswith("postgres://"):
     raw_uri = raw_uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = raw_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# Nastavení Flask-Mail
+# EMAIL
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
-
 mail = Mail(app)
 
-# Připoj app k SQLAlchemy
-db.init_app(app)
-
-# Připoj Flask-Login
+# LOGIN
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# Model zprávy
+# MODELY
 class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
 
-# Uživatelský model
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-# Uživatelé (zatím napevno)
 users = {
     "admin": generate_password_hash("tajneheslo")
 }
@@ -60,7 +51,6 @@ def load_user(user_id):
     return User(user_id)
 
 # ROUTES
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -88,11 +78,21 @@ def kontakt():
         )
         db.session.add(new_message)
         db.session.commit()
-        posli_email(form.name.data, form.email.data, form.message.data)
-        flash(f'Děkujeme {form.name.data}, tvoje zpráva byla odeslána!', 'success')
+
+        try:
+            msg = Message("Nová zpráva z portfolia",
+                          recipients=[app.config['MAIL_USERNAME']])
+            msg.body = f"Jméno: {form.name.data}\nE-mail: {form.email.data}\nZpráva:\n{form.message.data}"
+            msg.reply_to = form.email.data
+            mail.send(msg)
+        except Exception as e:
+            flash("Zpráva byla uložena, ale e-mail se nepodařilo odeslat.", 'warning')
+
+        flash(f'Děkujeme {form.name.data}, tvoje zpráva byla uložena!', 'success')
         return redirect(url_for('kontakt'))
 
-    return render_template('contact.html', form=form)
+    messages = ContactMessage.query.order_by(ContactMessage.id.desc()).all()
+    return render_template('contact.html', form=form, messages=messages)
 
 @app.route('/tajny-pristup', methods=['GET', 'POST'])
 def login():
@@ -103,11 +103,10 @@ def login():
 
         if user_hash and check_password_hash(user_hash, password):
             login_user(User(username))
-            flash('Přihlášení proběhlo úěspěšně!', 'success')
+            flash('Přihlášení proběhlo úspěšně!', 'success')
             return redirect(url_for('admin'))
         else:
             flash('Nesprávné přihlašovací údaje', 'danger')
-
     return render_template('login.html')
 
 @app.route('/logout')
@@ -122,16 +121,6 @@ def logout():
 def admin():
     messages = ContactMessage.query.order_by(ContactMessage.id.desc()).all()
     return render_template('admin.html', messages=messages)
-
-# Odeslání emailu po odeslání zprávy z formuláře
-def posli_email(jmeno, email, zprava):
-    try:
-        msg = Message("Nová zpráva z portfolia", recipients=[app.config['MAIL_USERNAME']])
-        msg.body = f"Jméno: {jmeno}\nE-mail: {email}\nZpráva:\n{zprava}"
-        msg.reply_to = email
-        mail.send(msg)
-    except Exception as e:
-        print("Chyba při odesílání e-mailu:", e)
 
 if __name__ == '__main__':
     app.run(debug=True)
